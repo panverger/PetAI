@@ -1,2 +1,2 @@
-[Εικόνες από το project στο google drive
-(https://drive.google.com/drive/folders/1_1Zb8pLlmpgxN15907n5Mo0D0s0UodSb?usp=sharing)] 
+Εικόνες από το project στο google drive
+https://drive.google.com/drive/folders/1_1Zb8pLlmpgxN15907n5Mo0D0s0UodSb?usp=sharing
