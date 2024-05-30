@@ -14,5 +14,5 @@
 
 Τα παραπάνω είναι αντικείμενα που έχουν ασχοληθεί σε μαθήματα της Β τάξης και της τρέχουσας Γ τάξης που φοιτούν 
 
-[Εδώ]([https://pages.github.com/](http://1epal-rethymn.mysch.gr/catdoor/) μπορείτε να δείτε τον 3D simulator που δημιουργήσαμε στα πλαίσια του project και για τις δοκιμές του κώδικα 
-Επίσης [εδώ]([https://pages.github.com/](http://1epal-rethymn.mysch.gr/catdoor/panel/) είναι η σελίδα ελέγχου της  πόρτας που γίνεται από την touch screen οθόνη
+[Εδώ](http://1epal-rethymn.mysch.gr/catdoor/) μπορείτε να δείτε τον 3D simulator που δημιουργήσαμε στα πλαίσια του project και για τις δοκιμές του κώδικα 
+Επίσης [εδώ](http://1epal-rethymn.mysch.gr/catdoor/panel/) είναι η σελίδα ελέγχου της  πόρτας που γίνεται από την touch screen οθόνη
