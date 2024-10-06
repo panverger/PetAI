@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This is the web for gatakia!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript">
+    </script>
+    <script type = "text/javascript">
+    	function onConnectionLost(){
+        	console.log("χάθηκε η σύνδεση");
+    	}
+    
+    	function onFailure(message) {
+    		console.log("Αποτυχία σύνδεσης");
+            setTimeout(MQTTconnect, reconnectTimeout);
+            }
+    
+    	var mqtt;
+        var reconnectTimeout = 2000;
+        var lockState = false;
+    
+		var host="test.mosquitto.org";
+		var port=8081;
+
+    	function onMessageArrived(r_message){
+    		out_msg="Μήνυμα <b>"+r_message.payloadString;
+    		out_msg=out_msg+"</b> από topic <b>"+r_message.destinationName;
+    		console.log(out_msg);
+    		document.getElementById("msgDiv").innerHTML=out_msg;
+    		}
+    
+    	function onConnected(recon,url){
+    	console.log(" in onConnected " +recon);
+    	}
+    	
+    	function onConnect() {
+    	console.log("Συνδέθηκε");
+    	mqtt.subscribe("gatakia/#");
+    	}
+    
+        function MQTTconnect() {
+    	console.log("Σύνδεση στο "+ host +" και port "+ port);
+    	var x=Math.floor(Math.random() * 10000); 
+    	var cname="client-"+x;
+    	mqtt = new Paho.MQTT.Client(host,port,cname);
+		var options = {
+			timeout: 3,
+			onSuccess: onConnect,
+			useSSL: true,
+			 };
+    	
+        mqtt.onMessageArrived = onMessageArrived;
+    	mqtt.onConnected = onConnected;
+    	mqtt.onConnectionLost = onFailure;
+    	mqtt.connect(options);
+    	}
+    
+    	function send_message(state){
+    		message = new Paho.MQTT.Message(state);
+        // mqtt topic
+    		message.destinationName = "gatakia/cmd"
+    		mqtt.send(message);
+    	}
+    	function send_lock_message(state){
+    	   if (lockState) {
+            state = 'false';
+            document.getElementById('lock').innerHTML='Lock ';
+            } 
+            else {
+            state = "true"; 
+            document.getElementById('lock').innerHTML='Unlock';
+            }
+            message = new Paho.MQTT.Message(state);
+    		message.destinationName = "gatakia/locked"
+    		mqtt.send(message);
+    		lockState = !lockState
+    	}
+    	
+    MQTTconnect();
+    
+    function toggle() {
+    var x = document.getElementById("msgDiv");
+    if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    } 
+    </script>
+    
+    <style>
+
+h1 {
+margin: 40px auto;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 70px;
+  font-weight: bold;
+  color: #CFC547;
+  text-align: center;
+  letter-spacing: 5px;
+  text-shadow: 3px 0px 7px rgba(81,67,21,0.8), -3px 0px 7px rgba(81,67,21,0.8), 0px 4px 7px rgba(81,67,21,0.8);
+
+}
+        .button-container {
+
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 60vh; /* Set the height of the container to full viewport height */
+            display: flex;
+        }
+
+        .button {            
+            font-size: 2.5em;
+            padding: 1em 3em;
+            margin: 20px ;
+            border-radius: 4px;
+            border: none;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            background-color: #4e82d4;
+            box-sizing:border-box;
+            max-width:8em;
+        }
+
+        .button:hover {
+            background-color: #063970;
+        }
+
+        .button:active {
+            background-color: #063970;
+        }
+
+        body {
+           height: 90%;
+            background-image: url(images.jfif);
+            /*background-repeat: no-repeat;*/
+            background-attachment: fixed;
+            /*background-size: cover; *//* Cover the entire background */
+            font-family: Arial, sans-serif;
+        }
+        #msgDiv{
+            font-size:3em;
+            margin:1em;
+            color: #CFC547;
+-webkit-text-stroke: 2px navy;
+        }
+        h1{
+            font-size:40px;
+        }
+    </style>
+    <h1><center>Σελίδα ελέγχου Gatakia petAI</center></h1>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" type="button" onClick="send_message('close')" >Close</button>
+        <button class="button" type="button" onClick="send_message('open')" >Open</button>
+        <button class="button" id='lock' type="button" onClick="send_lock_message('false')" >Lock</button>
+        <button class="button" type="button" onClick="send_message('history')" >History</button>
+    </div>
+    <div style="display:flex;">
+   <button class=button style="padding: 14px 10px;" onclick="toggle()">Report </button>
+    <div id="msgDiv"><center>Αναφορά μηνυμάτων.</center></div> 
+    </div>
+
+</body>
+</html>
